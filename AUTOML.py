@@ -1,8 +1,9 @@
 import streamlit as st
 import pandas as pd
 import numpy as np
-import lazypredict
 from sklearn.model_selection import train_test_split
+
+st.set_page_config(page_title="AUTO ML by I.A. Italia", page_icon=None, layout='wide', initial_sidebar_state='auto')
 
 st.markdown("<center><h1> AUTOML <small>by I. A. ITALIA</small></h1>", unsafe_allow_html=True)
 st.write('<p style="text-align: center;font-size:15px;" >Non <bold>sei stanco di dover provare decine di modelli solo per capire il più accurato</bold> per i tuoi dati <bold>  ?</bold><p>', unsafe_allow_html=True)
@@ -17,10 +18,10 @@ if file_caricato is not None:
 	dataframe = dataframe.dropna()
 	with st.beta_expander("VISUALIZZA DATASET"):
 		st.write(dataframe)
-	with st.beta_expander("STATISICA DI BADE"):
+	with st.beta_expander("STATISICA DI BASE"):
 		st.write(dataframe.describe())
 	
-	st.markdown("<br><br>", unsafe_allow_html=True)	
+	st.markdown("<br><br><br>", unsafe_allow_html=True)	
 	colonne = dataframe.columns
 	target = st.selectbox('Scegli la variabile Target', colonne )
 	st.write("target impostato su " + str(target))
@@ -37,8 +38,10 @@ if file_caricato is not None:
 	y = dataframe[target]
 	
 	X_train, X_test, y_train, y_test = train_test_split(X, y,test_size=percentuale_dati_test)
+	
+	col1, col2, col3 = st.beta_columns(3)
 
-	if(st.button("DIMMI QUALE E' IL MIGLIO MODELLO PER CLASSIFICARE/STIMARE IL MIO TARGET !")):
+	if(col2.button("DIMMI QUALE E' IL MIGLIO MODELLO PER CLASSIFICARE/STIMARE IL MIO TARGET !")):
 		if(tipo_di_problema == "CLASSIFICAZIONE"):
 			from lazypredict.Supervised import LazyClassifier
 			clf = LazyClassifier(verbose=0,ignore_warnings=True, custom_metric=None)
